@@ -1,0 +1,44 @@
+SQL> create table stud(
+  2  ID number(3),
+  3  name varchar(20),
+  4  sub varchar(20));
+
+Table created.
+
+SQL> select * from stud;
+
+no rows selected
+
+SQL> insert all
+  2  into stud values(1,'arun','comp sci')
+  3  into stud values(2,'krishna','data sci')
+  4  select * from dual;
+
+2 rows created.
+
+SQL> select * from stud;
+
+        ID NAME                 SUB                                             
+---------- -------------------- --------------------                            
+         1 arun                 comp sci                                        
+         2 krishna              data sci                                        
+
+SQL> spool off;
+SQL> create table stud(
+  2  ID number(3),
+  3  name varchar(20),
+  4  sub varchar(20));
+create table stud(
+             *
+ERROR at line 1:
+ORA-00955: name is already used by an existing object 
+
+
+SQL> create table stude(
+  2  ID number(3),
+  3  name varchar(20),
+  4  sub varchar(20));
+
+Table created.
+
+SQL> spool off;
