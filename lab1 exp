@@ -1,0 +1,63 @@
+*******************************************************************************
+CREATE TABLE emp1 (
+        empno NUMBER(4) PRIMARY KEY,
+        ename VARCHAR2(10),
+        job VARCHAR2(9) CONSTRAINT JOB_CHK_Cons CHECK (job IN ('CLRK', 'MGR', 'GM', 'A.MGR', 'CEO')),
+        mgrid NUMBER(4) CONSTRAINT MGR_FK_EMPNO_Cons REFERENCES EMP1(empno),
+        date_birth DATE,
+        sal NUMBER(7,2) CONSTRAINT SAL_20KMore_Cons CHECK (sal > 20000),
+        comm NUMBER(7,2) DEFAULT 1000,
+        deptno VARCHAR2(3) CONSTRAINT DEPTNO_FK_DEPT_Cons REFERENCES DEPT1(DNO) ON DELETE CASCADE,
+       date_join DATE,
+       CONSTRAINT DB_Less_DBJOIN_Cons CHECK (date_birth < date_join)
+   );
+
+
+create table dept1(
+	dno varchar2(3) constraint DNO_UNQ_Cons Unique,
+	dname varchar(10) constraint DNAMWE_UNQ_Cons unique,
+	location varchar2(9) constraint VALID_LOC_Cons check(location in ('BNG','MUB','HYD','CHN','MNG')),
+ CONSTRAINT D_LikeDNO_Cons check (dno like 'D%'));
+
+create table proj1(
+  2      dno varchar2(3) constraint DNO_FK_DEPT_Cons references DEPT1(dno) not null,
+  3      prj_no varchar2(5) constraint P_LikePRJNO_Cons check (prj_no like 'P%') not null,
+  4      prj_name varchar2(10),
+  5      prj_credit number(2) constraint PRJ_CREDIT_RANGE_Cons check (prj_credit between 1 and 10),
+  6      strt_date date,
+  7      end_date date,
+  8      constraint ENDDATE_GRT_STRT_Cons check(end_date>strt_date));
+
+Q1)*************************************************************
+ALTER TABLE proj1
+ADD primary key(dno,prj_no);
+
+
+********************************************************
+
+create table task1(
+task_id number(3),
+task_name varchar(100),
+prj_id varchar2(5),
+dno varchar2(3),
+s_date date,
+e_date date,
+status varchar(50),
+foreign key (prj_id,dno) references proj1(prj_no,dno) on delete set null,
+check (e_date>s_date));
+
+
+
+*******************************
+Q2)alter table emp1 add prj_id varchar2(5); 
+alter table emp1 add foreign key (deptno,prj_id) references proj1 (dno,prj_no); 
+
+Q3)alter table emp1 modify empno number(4) constraint VALID_EMPNO_Cons check(empno>100);
+
+Q4) alter table dept1 add dept_budget number(7);
+
+Q5) alter table proj1 add prj_fund number(7); 
+
+Q6) ALTER table task1 modify status varchar(50) check (status in ('NOT STARTED','IN PROGRESS','COMPLETED'));
+
+Q7) alter table task1 add primary key(task_id,prj_id);
