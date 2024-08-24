@@ -1,0 +1,183 @@
+SQL> insert into dept1 values('D4','HR','BGG',200000);
+insert into dept1 values('D4','HR','BGG',200000)
+*
+ERROR at line 1:
+ORA-02290: check constraint (MCA020.VALID_LOC_CONS) violated
+
+A) the location BGG does not exist in the check condition.
+
+insert into dept1 values('D4','HR','BNG',200000);
+
+**************************************************************************
+SQL> insert into dept1 values(null,'HR','BNG',200000);
+insert into dept1 values(null,'HR','BNG',200000)
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MCA020.DNAMWE_UNQ_CONS) violated
+
+A) the check condition is violated because the value does not start with the letter 'D'
+
+************************************************************************
+
+insert into emp1 values(100,'Ravi','MGR',111,to_date('10-10-1985','DD-MM-YYYY'),32000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1');
+insert into emp1 values(100,'Ravi','MGR',111,to_date('10-10-1985','DD-MM-YYYY'),32000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1')
+*
+ERROR at line 1:
+ORA-02290: check constraint (MCA020.VALID_EMPNO_CONS) violated
+
+
+a) this is because we have mentioned that the empno should be greater than 100
+
+insert into emp1 values(101,'Ravi','MGR',111,to_date('10-10-1985','DD-MM-YYYY'),32000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1');
+insert into emp1 values(101,'Ravi','MGR',111,to_date('10-10-1985','DD-MM-YYYY'),32000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MCA020.MGR_FK_EMPNO_CONS) violated - parent key not found
+
+
+a) this is because the mgrid is refering to the empno so there need be a record whose empno should be 111 before refering to it.
+
+insert into emp1 values(101,'Ravi','MGR',null,to_date('10-10-1985','DD-MM-YYYY'),320
+00,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1');
+
+
+*********************************************************************************
+ insert into emp1 values(102,'Raviraj','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),
+24000,1000,'D1',to_date('12-11-2000','DD-MM-YYYY'),'P3');
+insert into emp1 values(102,'Raviraj','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),24000,1000,'D1',to_date('12-11-2000','DD-MM-YYYY'),'P3')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MCA020.MGR_FK_EMPNO_CONS) violated - parent key not found
+
+A) this is because the mgrid 106 does not exist in the empno column it cannot refer to a record that is not present.
+
+insert into emp1 values(102,'Raviraj','CLRK',null,to_date('10-12-1980','DD-MM-YYYY')
+,24000,1000,'D1',to_date('12-11-2000','DD-MM-YYYY'),'P3');
+
+************************************************************
+
+ insert into emp1 values(111,'Raghu','GM',150,to_date('10-12-1974','DD-MM-YYYY'),4500
+0,15000,null,to_date('03-12-1985','DD-MM-YYYY'),null);
+insert into emp1 values(111,'Raghu','GM',150,to_date('10-12-1974','DD-MM-YYYY'),45000,15000,null,to_date('03-12-1985','DD-MM-YYYY'),null)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MCA020.MGR_FK_EMPNO_CONS) violated - parent key not found
+
+A) this is because the parent record 150 is not present in gthe empno so that mgrid cannot reference to the record that is not present in the parent column.
+
+insert into emp1 values(111,'Raghu','GM',null,to_date('10-12-1974','DD-MM-YYYY'),450
+00,15000,null,to_date('03-12-1985','DD-MM-YYYY'),null);
+
+*******************************************************************
+
+insert into emp1 values(103,'pichai','A.CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),50000,3000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1');
+*
+ERROR at line 1:
+ORA-02290: check constraint (MCA020.JOB_CHK_CONS) violated
+
+A) this is because A.CLRK does not satisfy the cond as it is not present.
+
+ insert into emp1 values(103,'pichai','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),5
+0000,3000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1');
+
+***************************************************************************
+
+insert into emp1 values(103,'dolly','CLRK',111,to_date('02-10-1980','DD-MM-YYYY'),63
+000,3000,'D1',to_date('02-10-2002','DD-MM-YYYY'),'P3');
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MCA020.SYS_C0094353) violated
+
+A) THIS IS because the empno is same as the previous one as it is a primary key it will accept only unique values
+
+insert into emp1 values(104,'dolly','CLRK',111,to_date('02-10-1980','DD-MM-YYYY'),63
+000,3000,'D1',to_date('02-10-2002','DD-MM-YYYY'),'P3');
+
+***********************************************************************************
+
+ insert into emp1 values(105,'spidermon','CLERK',125,to_date('02-10-1980','DD-MM-YYYY
+'),71000,1000,'D2',to_date('02-10-2005','DD-MM-YYYY'),'P1');
+*
+ERROR at line 1:
+ORA-02290: check constraint (MCA020.JOB_CHK_CONS) violated
+
+A) this is because the value clerk is not mentioned in the check constraint
+
+insert into emp1 values(105,'spidermon','CLRK',125,to_date('02-10-1980','DD-MM-YYYY'
+),71000,1000,'D2',to_date('02-10-2005','DD-MM-YYYY'),'P1');
+
+************************************************************************************
+
+insert into emp1 values(106,'batman','MGR',111,to_date('02-10-1986','DD-MM-YYYY'),77000,7000,'D2',to_date('02-10-1985','DD-MM-YYYY'),null);
+insert into emp1 values(106,'batman','MGR',111,to_date('02-10-1986','DD-MM-YYYY'),77000,7000,'D2',to_date('02-10-1985','DD-MM-YYYY'),null)
+*
+ERROR at line 1:
+ORA-02290: check constraint (MCA020.DB_LESS_DBJOIN_CONS) violated
+
+A) this is because the date of birth is less than date of join which we have mentioned in the check.
+
+ insert into emp1 values(106,'batman','MGR',111,to_date('02-10-1986','DD-MM-YYYY'),77000,7000,'D2',to_date('02-10-1987','DD-MM-YYYY'),null);
+
+*****************************************************************************************
+
+insert into emp1 values(108,'superman','CLRK',106,to_date('10-12-1970','DD-MM-YYYY')
+,29000,1000,'D9',to_date('02-10-2085','DD-MM-YYYY'),null);
+insert into emp1 values(108,'superman','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),29000,1000,'D9',to_date('02-10-2085','DD-MM-YYYY'),null)
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MCA020.DEPTNO_FK_DEPT_CONS) violated - parent key not found
+
+A) because the deptno d9 does not exiast in the dept table so it cannot refer to record that is not present in the parent table.
+
+ insert into emp1 values(108,'superman','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),29000,1000,'D4',to_date('02-10-2085','DD-MM-YYYY'),null);
+
+*****************************************************************************************
+
+ insert into emp1 values(103,'iornman','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),
+30000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P3');
+insert into emp1 values(103,'iornman','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),30000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P3')
+*
+ERROR at line 1:
+ORA-00001: unique constraint (MCA020.SYS_C0094353) violated
+
+A) BECAUSE THE empno is same 
+
+insert into emp1 values(113,'iornman','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),
+30000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P3');
+
+***************************************************************************************
+
+insert into emp1 values(null,'hulk','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),18000,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1');
+insert into emp1 values(null,'hulk','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),18000,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1')
+                        *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("MCA020"."EMP1"."EMPNO")
+
+A) BECAUSE PRIMARY KEY CANNOT BE NULL
+
+insert into emp1 values(null,'hulk','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),18000,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1');
+insert into emp1 values(null,'hulk','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),18000,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1')
+                        *
+ERROR at line 1:
+ORA-01400: cannot insert NULL into ("MCA020"."EMP1"."EMPNO")
+
+a) BECAUSE BIRTH DATE = join date which violates the check constraint
+
+insert into emp1 values(140,'hulk','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),180
+00,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1');
+insert into emp1 values(140,'hulk','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),18000,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1')
+*
+ERROR at line 1:
+ORA-02290: check constraint (MCA020.SAL_20KMORE_CONS) violated
+
+A) this is because the salary should be more than 20k
+
+insert into emp1 values(140,'hulk','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),280
+00,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1');
+insert into emp1 values(140,'hulk','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),28000,1000,'D5',to_date('10-12-1980','DD-MM-YYYY'),'P1')
+*
+ERROR at line 1:
+ORA-02291: integrity constraint (MCA020.SYS_C0094696) violated - parent key not found
+
+A) this is because the mgrid is not present in the empno as it is refereeing to it
+
