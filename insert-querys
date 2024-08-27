@@ -92,6 +92,35 @@ delete from task where prj_id='P2';
 SET comm = 10000
 WHERE dname = 'MGR' AND comm IS NULL;
 
+*****************************************************************************************
+
+
+4.1) select * from emp where salary>25000 or dept='D1';
+
+4.2)select name "Employee Name", salary SALARY from emp where salary between 25200 and 35200
+
+4.3)select name from emp where locations in ('BNG','MUB','HYD');
+select name from emp where location='BNG' or location='MUB' or location='HYD';
+
+4.4) select * from emp order by deptno asc order by salary desc;///doubt
+
+4.5)select * from task where prj_id='P3';
+
+4.6) select * from emp where comm is null;
+
+4.7)
+
+4.8)select pid, pname from proj where dept='D2' and credit>5;
+
+4.9)select * from emp where mgrid=111;
+
+4.10)select name from emp where name like ('_av%') and name like ('%j') and length(name)=6;
+
+4.11)
+
+4.12)select * from proj where strt_Date > '2024-01-01';
+
+
 
 
 
