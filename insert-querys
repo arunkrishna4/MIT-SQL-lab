@@ -90,10 +90,9 @@ delete from task where prj_id='P2';
 SET dno = 'D5'
 WHERE ROWNUM = 1;
 
-3.10)UPDATE emp
-SET comm = 10000
-WHERE dname = 'MGR' AND comm IS NULL;
+3.10)update emp1 set job='MGR',sal=35000,mgrid=111 where empno=123;
 
+3.11) 
 *****************************************************************************************
 
 
