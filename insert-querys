@@ -86,7 +86,9 @@ rollback;
 3.8) commit;
 delete from task where prj_id='P2';
 
-3.9)update proj set dno='D5' where dno='D1' limit 1;
+3.9)UPDATE proj1
+SET dno = 'D5'
+WHERE ROWNUM = 1;
 
 3.10)UPDATE emp
 SET comm = 10000
