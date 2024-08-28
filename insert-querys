@@ -42,31 +42,31 @@ commit;
 
 EMP insert
 
-insert into emp values(101,'Ravi','MGR',null,to_date('10-10-1985','DD-MM-YYYY'),32000,3000,'D1','P1',to_date('02-10-2001','DD-MM-YYYY'));
+insert into emp1 values(101,'Ravi','MGR',null,to_date('10-10-1985','DD-MM-YYYY'),32000,3000,'D1','P1',to_date('02-10-2001','DD-MM-YYYY'));
 
-insert into emp values(102,'Raviraj','CLRK',null,to_date('10-12-1980','DD-MM-YYYY'),24000,1000,'D1','P3',to_date('12-11-2000','DD-MM-YYYY'));
+insert into emp1 values(102,'Raviraj','CLRK',null,to_date('10-12-1980','DD-MM-YYYY'),24000,1000,'D1','P3',to_date('12-11-2000','DD-MM-YYYY'));
 
-insert into emp values(111,'Raghu','GM',null,to_date('10-12-1974','DD-MM-YYYY'),45000,15000,null,null,to_date('03-12-1985','DD-MM-YYYY'));
+insert into emp1 values(111,'Raghu','GM',null,to_date('10-12-1974','DD-MM-YYYY'),45000,15000,null,to_date('03-12-1985','DD-MM-YYYY'),null);
 
-insert into emp values(150,'sundar','CEO',null,to_date('10-12-1970','DD-MM-YYYY'),60000,30000,null,null,to_date('03-12-1990','DD-MM-YYYY'));
+insert into emp1 values(150,'sundar','CEO',null,to_date('10-12-1970','DD-MM-YYYY'),60000,30000,null,to_date('03-12-1990','DD-MM-YYYY'),null);
 
-insert into emp values(103,'spidermon','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),25000,1000,'D1','P1',to_date('02-10-2001','DD-MM-YYYY'));
+insert into emp1 values(103,'spidermon','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),25000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P1');
 
-insert into emp values(104,'superman','CLRK',111,to_date('02-10-1980','DD-MM-YYYY'),22000,1000,'D1','P3',to_date('02-10-2002','DD-MM-YYYY'));
+insert into emp1 values(104,'superman','CLRK',111,to_date('02-10-1980','DD-MM-YYYY'),22000,1000,'D1',to_date('02-10-2002','DD-MM-YYYY'),'P3');
 
-insert into emp values(125,'Manu','A.MGR',150,to_date('10-12-1980','DD-MM-YYYY'),27000,1000,'D4','P2',to_date('02-10-2002','DD-MM-YYYY'));
+insert into emp1 values(125,'Manu','A.MGR',150,to_date('10-12-1980','DD-MM-YYYY'),27000,1000,'D4',to_date('02-10-2002','DD-MM-YYYY'),'P2');
 
-insert into emp values(105,'ironman','CLRK',125,to_date('02-10-1980','DD-MM-YYYY'),36000,1000,'D2','P1',to_date('02-10-2005','DD-MM-YYYY'));
+insert into emp1 values(105,'ironman','CLRK',125,to_date('02-10-1980','DD-MM-YYYY'),36000,1000,'D2',to_date('02-10-2005','DD-MM-YYYY'),'P1');
 
-insert into emp values(106,'Thor','MGR',111,to_date('02-10-1986','DD-MM-YYYY'),62000,3000,'D2','P1',to_date('02-10-1985','DD-MM-YYYY'));
+insert into emp1 values(106,'Thor','MGR',111,to_date('02-10-1986','DD-MM-YYYY'),62000,3000,'D2',to_date('02-10-1985','DD-MM-YYYY'),'P1');
 
-insert into emp values(123,'Mahesh','CLRK',150,to_date('10-12-1974','DD-MM-YYYY'),25000,1000,'D3','P2',to_date('02-10-2002','DD-MM-YYYY'));
+insert into emp1 values(123,'Mahesh','CLRK',150,to_date('10-12-1974','DD-MM-YYYY'),25000,1000,'D3',to_date('02-10-2002','DD-MM-YYYY'),'P2');
 
-insert into emp values(108,'Hulk','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),30000,1000,'D3','P2',to_date('02-10-1985','DD-MM-YYYY'));
+insert into emp1 values(108,'Hulk','CLRK',106,to_date('10-12-1970','DD-MM-YYYY'),30000,1000,'D3',to_date('02-10-1985','DD-MM-YYYY'),'P2');
 
-insert into emp values(109,'Loki','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),32000,1000,'D1','P3',to_date('02-10-2001','DD-MM-YYYY'));
+insert into emp1 values(109,'Loki','CLRK',111,to_date('10-12-1980','DD-MM-YYYY'),32000,1000,'D1',to_date('02-10-2001','DD-MM-YYYY'),'P3');
 
-insert into emp values(110,'Vision','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),20000,2000,'D5','P1',to_date('10-12-1981','DD-MM-YYYY'));
+insert into emp1 values(110,'Vision','CLRK',106,to_date('10-12-1980','DD-MM-YYYY'),20000,2000,'D5',to_date('10-12-1981','DD-MM-YYYY'),'P1');
 
 commit;
 
