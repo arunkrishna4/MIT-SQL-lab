@@ -109,9 +109,11 @@ select ename from emp1 where deptno in (select dno from dept1 where location='HY
 
 4.5)select * from task where prj_id='P3';
 
-4.6) select * from emp where comm is null;
+4.6) select * from emp where comm is null or comm=0;
 
-4.7)insert into manager (select empno,ename,job,deptno,sal from emp1);
+4.7)CREATE TABLE Manager1 AS
+        SELECT Empno, Ename, Job, Deptno, Sal
+        FROM EMP1;
 
 4.8)select prj_name, prj_no from proj1 where dno='D2' and prj_credit>5;
 
@@ -119,9 +121,15 @@ select ename from emp1 where deptno in (select dno from dept1 where location='HY
 
 4.10)select name from emp where name like ('_av%') and name like ('%j') and length(name)=6;
 
-4.11)select * from proj1 where end_date - strt_date<=7;
+4.11)select * from task1 where e_date - s_date<=7;
 
-4.12)select * from proj where strt_Date > '01-jan-2024';
+4.12) SELECT Prj_no, Prj_Name
+    FROM Proj1
+    WHERE Prj_no IN (
+        SELECT DISTINCT Prj_no
+        FROM task1
+        WHERE Strt_Date > '01-jan-2024'
+    );
 
 
 
