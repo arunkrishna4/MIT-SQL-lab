@@ -1,0 +1,460 @@
+ select upper(ename) uppercase,lower(ename) lowercase,initcap(ename) capitalized, length(ename) len, substr(ename,2,3) substring from emp1;
+
+UPPERCASE  LOWERCASE  CAPITALIZE        LEN SUBSTRING
+---------- ---------- ---------- ---------- ------------
+RAVI       ravi       Ravi                4 avi
+RAVIRAJ    raviraj    Raviraj             7 avi
+RAGHU      raghu      Raghu               5 agh
+SUNDAR     sundar     Sundar              6 und
+SPIDERMON  spidermon  Spidermon           9 pid
+SUPERMAN   superman   Superman            8 upe
+MANU       manu       Manu                4 anu
+IRONMAN    ironman    Ironman             7 ron
+THOR       thor       Thor                4 hor
+MAHESH     mahesh     Mahesh              6 ahe
+HULK       hulk       Hulk                4 ulk
+
+UPPERCASE  LOWERCASE  CAPITALIZE        LEN SUBSTRING
+---------- ---------- ---------- ---------- ------------
+LOKI       loki       Loki                4 oki
+VISION     vision     Vision              6 isi
+
+13 rows selected.
+
+SQL> select * from emp1;
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       101 Ravi       MGR                  10-OCT-85      32000       3000 D1
+02-OCT-01 P1
+
+       102 Raviraj    CLRK                 10-DEC-80      24000       1000 D1
+12-NOV-00 P3
+
+       111 Raghu      GM                   10-DEC-74      45000      15000
+03-DEC-85
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       150 sundar     CEO                  10-DEC-70      60000      30000
+03-DEC-90
+
+       103 spidermon  CLRK             111 10-DEC-80      25000       1000 D1
+02-OCT-01 P1
+
+       104 superman   CLRK             111 02-OCT-80      22000       1000 D1
+02-OCT-02 P3
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       125 Manu       A.MGR            150 10-DEC-80      27000       1000 D4
+02-OCT-02 P2
+
+       105 ironman    CLRK             125 02-OCT-80      36000       1000 D2
+02-OCT-05 P1
+
+       106 Thor       MGR              111 02-OCT-81      62000       3000 D2
+02-OCT-85 P1
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       123 Mahesh     MGR              111 10-DEC-74      35000       1000 D3
+02-OCT-02 P2
+
+       108 Hulk       CLRK             106 10-DEC-70      30000       1000 D3
+02-OCT-85 P2
+
+       109 Loki       CLRK             111 10-DEC-80      32000       1000 D1
+02-OCT-01 P3
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       110 Vision     CLRK             106 10-DEC-80      24000       2000 D4
+10-DEC-81 P2
+
+
+13 rows selected.
+
+SQL> select * from emp1 where mgrid =(select mgrid from emp1 where ename
+='Raghu'0');
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> select * from emp1 where mgrid =(select mgrid from emp1 where ename='Raghu');
+
+no rows selected
+
+SQL> select * from emp1 where mgrid =(select empno\ from emp1 where enam
+e='Raghu'0');
+ERROR:
+ORA-01756: quoted string not properly terminated
+
+
+SQL> select * from emp1 where mgrid =(select empno from emp1 where ename
+='Raghu');
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       103 spidermon  CLRK             111 10-DEC-80      25000       1000 D1
+02-OCT-01 P1
+
+       104 superman   CLRK             111 02-OCT-80      22000       1000 D1
+02-OCT-02 P3
+
+       106 Thor       MGR              111 02-OCT-81      62000       3000 D2
+02-OCT-85 P1
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       123 Mahesh     MGR              111 10-DEC-74      35000       1000 D3
+02-OCT-02 P2
+
+       109 Loki       CLRK             111 10-DEC-80      32000       1000 D1
+02-OCT-01 P3
+
+
+SQL> desc dept1;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DNO                                                VARCHAR2(3)
+ DNAME                                              VARCHAR2(10)
+ LOCATION                                           VARCHAR2(9)
+ DEPT_BUDGET                                        NUMBER(7)
+
+SQL> select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.dno;
+select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.dno
+                                                                *
+ERROR at line 1:
+ORA-00904: "E"."DNO": invalid identifier
+
+
+SQL> desc emp1;
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ EMPNO                                     NOT NULL NUMBER(3)
+ ENAME                                              VARCHAR2(10)
+ JOB                                                VARCHAR2(9)
+ MGRID                                              NUMBER(3)
+ DATE_BIRTH                                         DATE
+ SAL                                                NUMBER(7,2)
+ COMM                                               NUMBER(7,2)
+ DEPTNO                                             VARCHAR2(3)
+ DATE_JOIN                                          DATE
+ PRJ_ID                                             VARCHAR2(5)
+
+SQL> select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.deptno ;
+     select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.d
+eptnoselect dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.d  ;
+select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.dep
+                                                                *
+ERROR at line 1:
+ORA-00904: "E"."DEP": invalid identifier
+
+
+SQL> select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.deptno group by d.dept;
+select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.deptno group by d.dept
+                                                                                  *
+ERROR at line 1:
+ORA-00904: "D"."DEPT": invalid identifier
+
+
+SQL> select dname, max(sal),min(sal) from dept1 d,emp1 e where d.dno=e.deptno group by d.dname;
+
+DNAME        MAX(SAL)   MIN(SAL)
+---------- ---------- ----------
+Marketing       32000      22000
+HR              27000      24000
+Research        62000      36000
+IT              35000      30000
+
+SQL> select * from dept
+  2  ;
+
+       DNO DNAME           ZONE
+---------- --------------- ----------
+         1 operations      north
+         2 finance         west
+         3 sales           south
+         5 human resource  west
+
+SQL> select * from dept1;
+
+DNO DNAME      LOCATION  DEPT_BUDGET
+--- ---------- --------- -----------
+D1  Marketing  CHN            500000
+D2  Research   MNG            300000
+D3  IT         BNG            400000
+D4  HR         BNG            200000
+D5  Accounts   BNG            500000
+    Corporate  HYD            700000
+
+6 rows selected.
+
+SQL> select * from emp;
+
+   EMPCODE NAME                DEPTNO     SALARY
+---------- --------------- ---------- ----------
+       100 ramesh                   1     100000
+       101 mukesh                   2     120000
+       102 suresh                   1     100000
+       108 rajesh                   3     140000
+       110 dinesh                   2     120000
+
+SQL> select * from emp1;
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       101 Ravi       MGR                  10-OCT-85      32000       3000 D1
+02-OCT-01 P1
+
+       102 Raviraj    CLRK                 10-DEC-80      24000       1000 D1
+12-NOV-00 P3
+
+       111 Raghu      GM                   10-DEC-74      45000      15000
+03-DEC-85
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       150 sundar     CEO                  10-DEC-70      60000      30000
+03-DEC-90
+
+       103 spidermon  CLRK             111 10-DEC-80      25000       1000 D1
+02-OCT-01 P1
+
+       104 superman   CLRK             111 02-OCT-80      22000       1000 D1
+02-OCT-02 P3
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       125 Manu       A.MGR            150 10-DEC-80      27000       1000 D4
+02-OCT-02 P2
+
+       105 ironman    CLRK             125 02-OCT-80      36000       1000 D2
+02-OCT-05 P1
+
+       106 Thor       MGR              111 02-OCT-81      62000       3000 D2
+02-OCT-85 P1
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       123 Mahesh     MGR              111 10-DEC-74      35000       1000 D3
+02-OCT-02 P2
+
+       108 Hulk       CLRK             106 10-DEC-70      30000       1000 D3
+02-OCT-85 P2
+
+       109 Loki       CLRK             111 10-DEC-80      32000       1000 D1
+02-OCT-01 P3
+
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP
+---------- ---------- --------- ---------- --------- ---------- ---------- ---
+DATE_JOIN PRJ_I
+--------- -----
+       110 Vision     CLRK             106 10-DEC-80      24000       2000 D4
+10-DEC-81 P2
+
+
+13 rows selected.
+
+SQL> select count(ename),dname from dept1 d,emp1 e where d.dno=e.deptno
+group by dname;
+
+COUNT(ENAME) DNAME
+------------ ----------
+           5 Marketing
+           2 HR
+           2 Research
+           2 IT
+
+SQL> set pagesize 1111;
+SQL> set linesize 1111;
+SQL> select * from emp1;
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP DATE_JOIN PRJ_I
+---------- ---------- --------- ---------- --------- ---------- ---------- --- --------- -----
+       101 Ravi       MGR                  10-OCT-85      32000       3000 D1  02-OCT-01 P1
+       102 Raviraj    CLRK                 10-DEC-80      24000       1000 D1  12-NOV-00 P3
+       111 Raghu      GM                   10-DEC-74      45000      15000     03-DEC-85
+       150 sundar     CEO                  10-DEC-70      60000      30000     03-DEC-90
+       103 spidermon  CLRK             111 10-DEC-80      25000       1000 D1  02-OCT-01 P1
+       104 superman   CLRK             111 02-OCT-80      22000       1000 D1  02-OCT-02 P3
+       125 Manu       A.MGR            150 10-DEC-80      27000       1000 D4  02-OCT-02 P2
+       105 ironman    CLRK             125 02-OCT-80      36000       1000 D2  02-OCT-05 P1
+       106 Thor       MGR              111 02-OCT-81      62000       3000 D2  02-OCT-85 P1
+       123 Mahesh     MGR              111 10-DEC-74      35000       1000 D3  02-OCT-02 P2
+       108 Hulk       CLRK             106 10-DEC-70      30000       1000 D3  02-OCT-85 P2
+       109 Loki       CLRK             111 10-DEC-80      32000       1000 D1  02-OCT-01 P3
+       110 Vision     CLRK             106 10-DEC-80      24000       2000 D4  10-DEC-81 P2
+
+13 rows selected.
+
+SQL> set pagesize 150;
+SQL> set linesize 150;
+SQL> select * from emp1;
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP DATE_JOIN PRJ_I
+---------- ---------- --------- ---------- --------- ---------- ---------- --- --------- -----
+       101 Ravi       MGR                  10-OCT-85      32000       3000 D1  02-OCT-01 P1
+       102 Raviraj    CLRK                 10-DEC-80      24000       1000 D1  12-NOV-00 P3
+       111 Raghu      GM                   10-DEC-74      45000      15000     03-DEC-85
+       150 sundar     CEO                  10-DEC-70      60000      30000     03-DEC-90
+       103 spidermon  CLRK             111 10-DEC-80      25000       1000 D1  02-OCT-01 P1
+       104 superman   CLRK             111 02-OCT-80      22000       1000 D1  02-OCT-02 P3
+       125 Manu       A.MGR            150 10-DEC-80      27000       1000 D4  02-OCT-02 P2
+       105 ironman    CLRK             125 02-OCT-80      36000       1000 D2  02-OCT-05 P1
+       106 Thor       MGR              111 02-OCT-81      62000       3000 D2  02-OCT-85 P1
+       123 Mahesh     MGR              111 10-DEC-74      35000       1000 D3  02-OCT-02 P2
+       108 Hulk       CLRK             106 10-DEC-70      30000       1000 D3  02-OCT-85 P2
+       109 Loki       CLRK             111 10-DEC-80      32000       1000 D1  02-OCT-01 P3
+       110 Vision     CLRK             106 10-DEC-80      24000       2000 D4  10-DEC-81 P2
+
+13 rows selected.
+
+SQL> select * from emp1 where get_date()-date_join > 1825;
+select * from emp1 where get_date()-date_join > 1825
+                         *
+ERROR at line 1:
+ORA-00904: "GET_DATE": invalid identifier
+
+
+SQL> select * from emp1 where current_date - date_join > 1825;
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP DATE_JOIN PRJ_I
+---------- ---------- --------- ---------- --------- ---------- ---------- --- --------- -----
+       101 Ravi       MGR                  10-OCT-85      32000       3000 D1  02-OCT-01 P1
+       102 Raviraj    CLRK                 10-DEC-80      24000       1000 D1  12-NOV-00 P3
+       111 Raghu      GM                   10-DEC-74      45000      15000     03-DEC-85
+       150 sundar     CEO                  10-DEC-70      60000      30000     03-DEC-90
+       103 spidermon  CLRK             111 10-DEC-80      25000       1000 D1  02-OCT-01 P1
+       104 superman   CLRK             111 02-OCT-80      22000       1000 D1  02-OCT-02 P3
+       125 Manu       A.MGR            150 10-DEC-80      27000       1000 D4  02-OCT-02 P2
+       105 ironman    CLRK             125 02-OCT-80      36000       1000 D2  02-OCT-05 P1
+       106 Thor       MGR              111 02-OCT-81      62000       3000 D2  02-OCT-85 P1
+       123 Mahesh     MGR              111 10-DEC-74      35000       1000 D3  02-OCT-02 P2
+       108 Hulk       CLRK             106 10-DEC-70      30000       1000 D3  02-OCT-85 P2
+       109 Loki       CLRK             111 10-DEC-80      32000       1000 D1  02-OCT-01 P3
+       110 Vision     CLRK             106 10-DEC-80      24000       2000 D4  10-DEC-81 P2
+
+13 rows selected.
+
+SQL> select * from emp1 where date_birth between '01-dec-2000' and '31-d
+ec-2000';
+
+no rows selected
+
+SQL> update emp1 set date_birth='24-dec-2000' where ename='Hulk';
+update emp1 set date_birth='24-dec-2000' where ename='Hulk'
+*
+ERROR at line 1:
+ORA-02290: check constraint (MCA020.DB_LESS_DBJOIN_CONS) violated
+
+
+SQL> update emp1 set date_birth='24-dec-2000',date_join='05-oct-2020' wh
+ere ename='Hulk';
+
+1 row updated.
+
+SQL> select * from emp1 where date_birth between '01-dec-2000' and '31-dec-2000';
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP DATE_JOIN PRJ_I
+---------- ---------- --------- ---------- --------- ---------- ---------- --- --------- -----
+       108 Hulk       CLRK             106 24-DEC-00      30000       1000 D3  05-OCT-20 P2
+
+SQL> select count(ename),dname from dept1 d,emp1 e where d.dno=e.deptno group by dname having count(ename)>3;
+
+COUNT(ENAME) DNAME
+------------ ----------
+           5 Marketing
+
+SQL> select * from proj1;
+
+DNO PRJ_N PRJ_NAME   PRJ_CREDIT STRT_DATE END_DATE    PRJ_FUND
+--- ----- ---------- ---------- --------- --------- ----------
+D1  P2    bello              10 10-JUN-04 16-JUN-04      50000
+D1  P1    todo                4 10-MAY-85 01-JAN-87     400000
+D2  P1    shop_cart           2 17-MAY-89 21-NOV-90     200000
+D3  P2    webpage             3 27-JUL-93 17-OCT-94     300000
+D1  P3    app                 5 12-JAN-95 07-JUL-97     500000
+D4  P2    server              7 06-MAR-01 04-APR-04     700000
+
+6 rows selected.
+
+SQL> update proj1 set prj_name='Drug Repositioning' where prj_credit=3;
+update proj1 set prj_name='Drug Repositioning' where prj_credit=3
+                          *
+ERROR at line 1:
+ORA-12899: value too large for column "MCA020"."PROJ1"."PRJ_NAME" (actual: 18, maximum: 10)
+
+
+SQL> update proj1 set prj_name='DrugRepositioning' where prj_credit=3;
+update proj1 set prj_name='DrugRepositioning' where prj_credit=3
+                          *
+ERROR at line 1:
+ORA-12899: value too large for column "MCA020"."PROJ1"."PRJ_NAME" (actual: 17, maximum: 10)
+
+
+SQL> update proj1 set prj_name='Drug Repositioning' where prj_credit=3;
+update proj1 set prj_name='Drug Repositioning' where prj_credit=3
+                          *
+ERROR at line 1:
+ORA-12899: value too large for column "MCA020"."PROJ1"."PRJ_NAME" (actual: 18, maximum: 10)
+
+
+SQL> alter table proj1 modify prj_name varchar2(30);
+
+Table altered.
+
+SQL> update proj1 set prj_name='Drug Repositioning' where prj_credit=3;
+
+1 row updated.
+
+SQL> select * from emp1 e,proj1 p where e.prj_id=p.prj_no and prj_name='
+Drug Repositioning';
+
+     EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP DATE_JOIN PRJ_I DNO PRJ_N PRJ_NAME                       PRJ_CREDIT
+---------- ---------- --------- ---------- --------- ---------- ---------- --- --------- ----- --- ----- ------------------------------ ----------
+STRT_DATE END_DATE    PRJ_FUND
+--------- --------- ----------
+       125 Manu       A.MGR            150 10-DEC-80      27000       1000 D4  02-OCT-02 P2    D3  P2    Drug Repositioning
+3
+27-JUL-93 17-OCT-94     300000
+
+       123 Mahesh     MGR              111 10-DEC-74      35000       1000 D3  02-OCT-02 P2    D3  P2    Drug Repositioning
+3
+27-JUL-93 17-OCT-94     300000
+
+       108 Hulk       CLRK             106 24-DEC-00      30000       1000 D3  05-OCT-20 P2    D3  P2    Drug Repositioning
+3
+27-JUL-93 17-OCT-94     300000
