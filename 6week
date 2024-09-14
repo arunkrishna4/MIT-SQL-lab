@@ -1,0 +1,53 @@
+6.3) select ename, job from emp1 where deptno in (select dno from dept1 where dname = 'Marketing' or dname = 'Research' );
+
+ENAME      JOB
+---------- ---------
+Ravi       MGR
+Raviraj    CLRK
+spidermon  CLRK
+superman   CLRK
+ironman    CLRK
+Thor       MGR
+Loki       CLRK
+
+_______________________________________________________________________________________________
+6.4)select ename,sal from emp1 where sal>(select min(sal) from emp1);
+
+ENAME             SAL
+---------- ----------
+Ravi            32000
+Raviraj         24000
+Raghu           45000
+sundar          60000
+spidermon       25000
+Manu            27000
+ironman         36000
+Thor            62000
+Mahesh          35000
+Hulk            30000
+Loki            32000
+_______________________________________________________________________________________________________________
+6.9) select empno,ename,job from emp1 where job=(select job from emp1 where ename='Mahesh');
+
+     EMPNO ENAME      JOB
+---------- ---------- ---------
+       101 Ravi       MGR
+       106 Thor       MGR
+       123 Mahesh     MGR
+_______________________________________________________________________________________________
+6.12) create view emp_prj_vw2 as select ename, prj_name from emp1 e, proj1 p where deptno=dno;
+ENAME      PRJ_NAME
+---------- ------------------------------
+Ravi       bello
+Ravi       todo
+Ravi       app
+Raviraj    bello
+Raviraj    todo
+Raviraj    app
+spidermon  bello
+spidermon  todo
+spidermon  app
+superman   bello
+superman   todo
+
+_________________________________________________________________________________________________________________
