@@ -26,6 +26,9 @@ Thor            62000
 Mahesh          35000
 Hulk            30000
 Loki            32000
+______________________________________________________________________________________________________________
+6.6)
+select deptno , avg(sal) from dept1 where avg(sal)> all(select avg(sal)from dept1 group by d_name);
 _______________________________________________________________________________________________________________
 6.9) select empno,ename,job from emp1 where job=(select job from emp1 where ename='Mahesh');
 
@@ -34,8 +37,14 @@ ________________________________________________________________________________
        101 Ravi       MGR
        106 Thor       MGR
        123 Mahesh     MGR
+
+________________________________________________________________________________________________
+6.10)
+create view emp_prj_vw as select emp.*,prj_name from emp1 e,proj1 p where e.prj_id = p.prj_no and job="Marketing"; 
+
+
 _______________________________________________________________________________________________
-6.12) create view emp_prj_vw2 as select ename, prj_name from emp1 e, proj1 p where deptno=dno;
+6.11) create view emp_prj_vw2 as select ename, prj_name from emp1 e, proj1 p where deptno=dno;
 ENAME      PRJ_NAME
 ---------- ------------------------------
 Ravi       bello
@@ -49,5 +58,16 @@ spidermon  todo
 spidermon  app
 superman   bello
 superman   todo
+__________________________________________________________________________________________________________________
+6.13)
+SELECT MONTH(date_join) AS JoinMonth, COUNT(*) AS EmployeesJoined
+FROM emp1
+GROUP BY MONTH(date_join)
+ORDER BY JoinMonth ASC;
+
 
 _________________________________________________________________________________________________________________
+6.14)
+CREATE INDEX name_age_idx
+ON Customers (first_name, age);
+
