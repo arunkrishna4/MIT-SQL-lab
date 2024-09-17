@@ -1,6 +1,21 @@
 6.1)Select job,sum(Sal) from emp group by job;
+
+JOB         SUM(SAL)
+--------- ----------
+CEO            60000
+GM             45000
+A.MGR          27000
+CLRK          193000
+MGR           129000
+
 __________________________________________________________________________________
 6.2) Select Dname from dept inner join(Select Deptno from emp group by Deptno having count(*)=(Select max(count(empno)) from emp where Prj_id='P1' group by Deptno))on DNO=DEPTNO;
+
+DNAME
+----------
+Research
+IT
+HR
 ______________________________________________________________________________________________________
 6.3) select ename, job from emp1 where deptno in (select dno from dept1 where dname = 'Marketing' or dname = 'Research' );
 
@@ -32,20 +47,27 @@ Hulk            30000
 Loki            32000
 ______________________________________________________________________________________________________________
 6.5)
-select deptno,avg(sal) from emp where deptno is not null group by deptno having avg(sal)>=all(select avg(sal) from emp where deptno is not null group by deptno);
-
-___________________________________________________________________________________________________0
+select deptno,avg(sal) from emp1 where deptno is not null group by deptno having avg(sal)>=all(select avg(sal) from emp1 where deptno is not null group by deptno);
+DEP   AVG(SAL)
+--- ----------
+D2       49000
+___________________________________________________________________________________________________
 6.6)
 select deptno , avg(sal) from dept1 where avg(sal)> all(select avg(sal)from dept1 group by d_name);
 
 ________________________________________________________________________________________________
 6.7)select dname from dept,proj where dept.dno=proj.dno group by dname having count(prj_no)>1;
+DNAME
+----------
+Marketing
+
 _______________________________________________________________________________________________________________
 6.8) select count(ename) from emp where to_char(date_join,'DD')>15;
 
-
-
-______________________________________________________________________________________________
+COUNT(ENAME)
+------------
+           1
+___________________________________________________________________________________________
 6.9) select empno,ename,job from emp1 where job=(select job from emp1 where ename='Mahesh');
 
      EMPNO ENAME      JOB
@@ -56,11 +78,20 @@ ________________________________________________________________________________
 
 ________________________________________________________________________________________________
 6.10)
-create view emp_prj_vw as select emp.*,prj_name from emp1 e,proj1 p where e.prj_id = p.prj_no and job="Marketing"; 
+create view emp_prj_vw as select e.*,prj_name from emp1 e,proj1 p,dept1 d where e.prj_id = p.prj_no and e.deptno=d.dno and dname='Marketing';
 
+
+view created
+
+ EMPNO ENAME      JOB            MGRID DATE_BIRT        SAL       COMM DEP DATE_JOIN PRJ_I PRJ_NAME
+---------- ---------- --------- ---------- --------- ---------- ---------- --- --------- ----- ------------------------------
+       101 Ravi       MGR                  10-OCT-85      32000       3000 D1  02-OCT-01 P1    todo
+       103 spidermon  CLRK             111 10-DEC-80      25000       1000 D1  02-OCT-01 P1    todo
 
 _______________________________________________________________________________________________
 6.11) create view emp_prj_vw2 as select ename, prj_name from emp1 e, proj1 p where deptno=dno;
+view created
+
 ENAME      PRJ_NAME
 ---------- ------------------------------
 Ravi       bello
@@ -77,25 +108,26 @@ superman   todo
 
 ________________________________________________________________________________________________
 6.12)
-SELECT
-        prj_id,
-        SUM(TO_NUMBER(TO_DATE(e_date, 'YYYY-MM-DD') - TO_DATE(s_date, 'YYYY-MM-DD'))) AS total_duration,
+SELECT prj_id, SUM(TO_NUMBER(TO_DATE(e_date, 'YYYY-MM-DD') - TO_DATE(s_date, 'YYYY-MM-DD'))) AS total_duration,
         AVG(TO_NUMBER(TO_DATE(e_date, 'YYYY-MM-DD') - TO_DATE(s_date, 'YYYY-MM-DD'))) AS average_duration
-    FROM
-        task
-    GROUP BY
-        prj_id;
+    FROM task1 GROUP BY prj_id;
 
+PRJ_I TOTAL_DURATION AVERAGE_DURATION
+----- -------------- ----------------
+P1              2013           1006.5
 __________________________________________________________________________________________________________________
 6.13)
-SELECT MONTH(date_join) AS JoinMonth, COUNT(*) AS EmployeesJoined
-FROM emp1
-GROUP BY MONTH(date_join)
-ORDER BY JoinMonth ASC;
+select count(ename) from emp1 group by extract(month from date_join) order by count(empno);
+
+COUNT(ENAME)
+------------
+           1
+           3
+           9
 
 
 _________________________________________________________________________________________________________________
 6.14)
-CREATE INDEX name_age_idx
-ON Customers (first_name, age);
+CREATE INDEX idx  ON emp1 (ename, sal);
 
+Index created.
