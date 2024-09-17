@@ -47,13 +47,17 @@ Hulk            30000
 Loki            32000
 ______________________________________________________________________________________________________________
 6.5)
+select empno,ename,count(distinct prj_id) as proj_count from emp e group by empno,ename iorder by prj_count desc;
+empno   ename   prj_count
+--------------------------
+101     raghu       1
+106     batman      1
+__________________________________________________________________________________________________
+6.6)
 select deptno,avg(sal) from emp1 where deptno is not null group by deptno having avg(sal)>=all(select avg(sal) from emp1 where deptno is not null group by deptno);
 DEP   AVG(SAL)
 --- ----------
 D2       49000
-___________________________________________________________________________________________________
-6.6)
-select deptno , avg(sal) from dept1 where avg(sal)> all(select avg(sal)from dept1 group by d_name);
 
 ________________________________________________________________________________________________
 6.7)select dname from dept,proj where dept.dno=proj.dno group by dname having count(prj_no)>1;
