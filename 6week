@@ -1,3 +1,7 @@
+6.1)Select job,sum(Sal) from emp group by job;
+__________________________________________________________________________________
+6.2) Select Dname from dept inner join(Select Deptno from emp group by Deptno having count(*)=(Select max(count(empno)) from emp where Prj_id='P1' group by Deptno))on DNO=DEPTNO;
+______________________________________________________________________________________________________
 6.3) select ename, job from emp1 where deptno in (select dno from dept1 where dname = 'Marketing' or dname = 'Research' );
 
 ENAME      JOB
@@ -27,9 +31,21 @@ Mahesh          35000
 Hulk            30000
 Loki            32000
 ______________________________________________________________________________________________________________
+6.5)
+select deptno,avg(sal) from emp where deptno is not null group by deptno having avg(sal)>=all(select avg(sal) from emp where deptno is not null group by deptno);
+
+___________________________________________________________________________________________________0
 6.6)
 select deptno , avg(sal) from dept1 where avg(sal)> all(select avg(sal)from dept1 group by d_name);
+
+________________________________________________________________________________________________
+6.7)select dname from dept,proj where dept.dno=proj.dno group by dname having count(prj_no)>1;
 _______________________________________________________________________________________________________________
+6.8) select count(ename) from emp where to_char(date_join,'DD')>15;
+
+
+
+______________________________________________________________________________________________
 6.9) select empno,ename,job from emp1 where job=(select job from emp1 where ename='Mahesh');
 
      EMPNO ENAME      JOB
@@ -58,6 +74,18 @@ spidermon  todo
 spidermon  app
 superman   bello
 superman   todo
+
+________________________________________________________________________________________________
+6.12)
+SELECT
+        prj_id,
+        SUM(TO_NUMBER(TO_DATE(e_date, 'YYYY-MM-DD') - TO_DATE(s_date, 'YYYY-MM-DD'))) AS total_duration,
+        AVG(TO_NUMBER(TO_DATE(e_date, 'YYYY-MM-DD') - TO_DATE(s_date, 'YYYY-MM-DD'))) AS average_duration
+    FROM
+        task
+    GROUP BY
+        prj_id;
+
 __________________________________________________________________________________________________________________
 6.13)
 SELECT MONTH(date_join) AS JoinMonth, COUNT(*) AS EmployeesJoined
