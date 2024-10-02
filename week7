@@ -1,0 +1,93 @@
+7.1) 
+declare 
+  res number:=0;
+  inp number(3);
+  ld number(1);
+begin
+  inp :=&inp;
+  while(inp>0)
+  loop
+    ld:=mod(inp,10);
+    res:=res+ld;
+    inp:= inp/10;
+  end loop;
+  DBMS_output.put_line('sum is: '|| res);
+  end;
+  /
+____________________________________________________________________________
+7.2) 
+DECLARE
+  inp VARCHAR2(50) := 'ga';
+  rev VARCHAR2(50);
+  leng NUMBER;
+
+BEGIN
+  leng := LENGTH(inp);
+  rev:=REVERSE(inp);
+  IF inp =rev  THEN
+    DBMS_OUTPUT.PUT_LINE('Palindrome');
+  ELSE
+    DBMS_OUTPUT.PUT_LINE('Not a palindrome');
+  END IF;
+END;
+/
+_________________________________________________________________________
+7.3)
+declare
+  v_empno number:=&v_empno;
+  v_ename varchar(50);
+  v_dname varchar(20);
+  v_sal number;
+begin
+  select ename,dname,sal into v_ename,v_dname,v_sal from emp where empno=v_empno;
+  DBMS_output.put_line(v_ename ||'works in '||v_dname ||'department and draws '||v_sal||'/- as salary');
+  end;
+  /
+__________________________________________________________________________________________________
+7.4)
+create table empsal(empno number(3) primary key,
+  ename varchar(50),
+  sal number(5),
+  hra number(5),
+  da number(5),
+  gs number(5),
+  pf number(5),
+  netsal number(5));
+
+declare
+  eno empsal.empno%type;
+  ena empsal.ename%type;
+  esal empsal.sal%type;
+  v_hra empsal.hra%type;
+  v_da empsal.da%type;
+  v_gs empsal.gs%type;
+  v_pf empsal.pf%type;
+  v_netsal empsal.netsal%type;
+begin
+  select ename,empid,sal into ena,eno,esal from emp where empid=eno;
+  v_hra:=0.5*esal;
+  v_da:=0.2*esal;
+  v_pf:=0.12*esal;
+  v_gs:=esal + v_hra + v_da;
+  v_netsal:=v_gs-v_pf;
+  insert into empsal values(eno,ena,esal,v_hra,v_da,v_pf,v_gs,v_netsal);
+  end;
+  /
+  
+______________________________________________________________________________________________________
+7.5) 
+create table circle(radius number(2),
+                    area number(4));
+
+declare
+  pi number :=3.14;
+  ar number;
+  rad number:=3;
+begin
+  loop
+  exit when rad<=7;
+  ar:=rad*pi*pi;
+  insert into circle(radius,area) values(rad,ar);
+  end loop;
+end;
+/
