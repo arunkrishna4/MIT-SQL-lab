@@ -1,0 +1,80 @@
+9.1)
+declare
+  v_empno number:=&v_empno;
+  v_ename varchar(15);
+  v_deptno number:=&v_deptno;
+begin
+  select ename into v_ename from emp where empno=v_empno;
+  dbms_output.put_line(v_ename);
+  
+  select ename into v_ename from emp where rownum=1;
+  dbms_output.put_line(v_ename);
+  
+  select ename into v_name from emp where deptno=v_deptno;
+  dbms_output.put_line(v_ename);
+  
+  exception
+    when invalid_number then
+        to_number(ename);
+    when too_many_rows then 
+      dbms_output.put_line('there are multiple records to retrive');
+    when data_not_found then
+      dbms_output.put_line('no data found');
+end;
+/
+-------------------------------------------------------------------------------------------------
+9.2) 
+DECLARE
+  pri_less EXCEPTION;
+  ir_less EXCEPTION;
+  dur_less EXCEPTION;
+
+  pri NUMBER := &pri;
+  ir NUMBER := &ir;
+  dur NUMBER := &dur;
+
+BEGIN
+  IF pri <= 1000 THEN
+    RAISE pri_less;
+  END IF;
+
+  IF ir < 5 THEN
+    RAISE ir_less;
+  END IF;
+
+  IF dur < 1 THEN
+    RAISE dur_less;
+  END IF;
+  
+  DBMS_OUTPUT.PUT_LINE('interest to be paid is: '||pri*ir*dur);
+EXCEPTION
+  WHEN pri_less THEN
+    DBMS_OUTPUT.PUT_LINE('Principal amount is less');
+  WHEN ir_less THEN
+    DBMS_OUTPUT.PUT_LINE('Interest rate is less');
+  WHEN dur_less THEN
+    DBMS_OUTPUT.PUT_LINE('Duration is less');
+END;
+/
+__________________________________________________________________________________________________________________
+9.3) 
+declare 
+  sal_less exception;
+  v_empno number:=&v_empno;
+  v_name varchar(15);
+  v_sal number;
+begin
+  select empno, ename, sal into v_empno,v_name,v_sal from emp where empno=v_empno;
+  if sal>25000 then
+    raise sal_less;
+    end if;
+  DBMS_output.put_line('name: '|| name ||' id: '||empno ||' salary: '||sal);
+  exception
+    when no_data_found then
+      dbms_output.put_line('user not found in the employee list');
+    when sal_less then
+      update emp set sal=25000 where empno=v_empno;
+  end;
+  /
+
+_
