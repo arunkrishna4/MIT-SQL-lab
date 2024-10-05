@@ -1,0 +1,117 @@
+8.1)
+declare
+	cursor c is select ename,sal from emp1 where sal>30000;
+begin
+	for i in c
+	loop
+		dbms_output.put_line(i.ename||' ' || i.sal);
+	end loop;
+end;
+/
+output:
+
+Loki 32000
+Mahesh 35000
+Raghu 45000
+Ravi 32000
+Thor 62000
+ironman 36000
+sundar 60000
+
+---------------------------------------------------------
+8.2)
+
+DECLARE
+    v_prj_id VARCHAR2(10) := '&prj_no';  
+    v_prj_cre NUMBER;                     
+    v_prj_fund NUMBER;                    
+    v_dept_budget NUMBER;                 
+    v_incent_amt NUMBER;                  
+
+    CURSOR prj_c(p_prj_id VARCHAR2) IS 
+        SELECT prj_credit, prj_fund FROM proj1 WHERE prj_no = p_prj_id;
+
+    CURSOR emp_c(p_prj_id VARCHAR2) IS 
+        SELECT empno, deptno, prj_id FROM emp1 WHERE prj_id = p_prj_id;
+
+BEGIN
+
+    OPEN prj_c(v_prj_id);
+    FETCH prj_c INTO v_prj_cre, v_prj_fund;
+    CLOSE prj_c;
+
+
+    v_dept_budget := (v_prj_cre / 100) * v_prj_fund * 0.03;
+
+
+    FOR i IN emp_c(v_prj_id) LOOP
+        v_incent_amt := (v_prj_cre / 100) * v_prj_fund * 0.70;  -- Calculate incentive amount
+        
+
+        UPDATE emp1 
+        SET sal = sal + (v_incent_amt / (SELECT COUNT(*) FROM emp1 WHERE deptno = i.deptno AND prj_id = i.prj_id))
+        WHERE empno = i.empno;
+
+   
+        UPDATE dept1 
+        SET dept_budget = dept_budget + v_dept_budget 
+        WHERE dno = i.deptno;
+    END LOOP;
+
+    DBMS_OUTPUT.PUT_LINE('Incentives allocated successfully.');
+END;
+/
+
+output:
+
+Incentives allocated successfully.
+__________________________________________________________________
+8.3)
+declare 
+	cursor c is select prj_id,task_name from task1;
+begin
+	for i in c
+	loop
+		dbms_output.put_line(i.prj_id||'  ' ||i.task_name);
+	end loop;
+end;
+/
+output;
+P1  Design Phase
+P1  Development Phase
+P2  Design Phase
+P3  Development Phase
+P3  Testing Phase
+
+_________________________________________________________________________
+8.4)
+declare
+	cursor c(v_job varchar2, v_dept_no varchar2) is select * from emp1 where job=v_job and deptno=v_dept_no;
+begin
+	for i in c('&v_job', '&v_dept_no')
+	loop
+		DBMS_OUTPUT.PUT_LINE(i.ename);
+	end loop;
+end;
+/
+
+output:
+Mahesh
+
+________________________________________________________________________
+8.5)
+declare 
+	cursor c(v_prj_id varchar2) is select ename,sal,deptno from emp1 where prj_id=v_prj_id;
+begin
+	for i in c('&v_prj_id')	
+	loop
+		dbms_output.put_line(i.ename||' '||i.sal||' ' ||i.deptno);
+	end loop;
+end;
+/
+
+Output:
+
+Raviraj 24000 D1
+superman 22000 D1
+Loki 32000 D1
