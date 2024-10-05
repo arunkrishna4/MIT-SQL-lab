@@ -9,7 +9,7 @@ begin
   loop
     ld:=mod(inp,10);
     res:=res+ld;
-    inp:= inp/10;
+    inp:= floor(inp/10);
   end loop;
   DBMS_output.put_line('sum is: '|| res);
   end;
@@ -17,13 +17,13 @@ begin
 ____________________________________________________________________________
 7.2) 
 DECLARE
-  inp VARCHAR2(50) := 'ga';
+  inp VARCHAR2(50) := '&inp';
   rev VARCHAR2(50);
-  leng NUMBER;
 
 BEGIN
-  leng := LENGTH(inp);
-  rev:=REVERSE(inp);
+  FOR i IN REVERSE 1 .. LENGTH(inp) LOOP
+    rev := rev || SUBSTR(inp, i, 1);
+  END LOOP;
   IF inp =rev  THEN
     DBMS_OUTPUT.PUT_LINE('Palindrome');
   ELSE
@@ -36,11 +36,11 @@ _________________________________________________________________________
 declare
   v_empno number:=&v_empno;
   v_ename varchar(50);
-  v_dname varchar(20);
+  v_deptno varchar(20);
   v_sal number;
 begin
-  select ename,dname,sal into v_ename,v_dname,v_sal from emp where empno=v_empno;
-  DBMS_output.put_line(v_ename ||'works in '||v_dname ||'department and draws '||v_sal||'/- as salary');
+  select ename,deptno,sal into v_ename,v_deptno,v_sal from emp1 where empno=v_empno;
+  DBMS_output.put_line(v_ename ||'works in '||v_deptno ||'department and draws '||v_sal||'/- as salary');
   end;
   /
 __________________________________________________________________________________________________
@@ -55,7 +55,7 @@ create table empsal(empno number(3) primary key,
   netsal number(5));
 
 declare
-  eno empsal.empno%type;
+  eno empsal.empno%type:=&eno;
   ena empsal.ename%type;
   esal empsal.sal%type;
   v_hra empsal.hra%type;
@@ -64,7 +64,7 @@ declare
   v_pf empsal.pf%type;
   v_netsal empsal.netsal%type;
 begin
-  select ename,empid,sal into ena,eno,esal from emp where empid=eno;
+  select ename,empno,sal into ena,eno,esal from emp1 where empno=eno;
   v_hra:=0.5*esal;
   v_da:=0.2*esal;
   v_pf:=0.12*esal;
@@ -76,7 +76,7 @@ begin
   
 ______________________________________________________________________________________________________
 7.5) 
-create table circle(radius number(2),
+create table circle(radius number(2) primary key,
                     area number(4));
 
 declare
@@ -85,9 +85,11 @@ declare
   rad number:=3;
 begin
   loop
-  exit when rad<=7;
-  ar:=rad*pi*pi;
-  insert into circle(radius,area) values(rad,ar);
+    exit when rad>7;
+    ar:=rad*pi*pi;
+    insert into circle(radius,area) values(rad,ar);
+    rad:=rad+1;
   end loop;
+commit;
 end;
 /
