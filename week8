@@ -100,13 +100,13 @@ Mahesh
 
 ________________________________________________________________________
 8.5)
-declare 
-	cursor c(v_prj_id varchar2) is select ename,sal,deptno from emp1 where prj_id=v_prj_id;
+declare
+  cursor c(v_prj_id varchar2) is select * from ( select ename, sal, deptno from emp1 where prj_id = v_prj_id  order by sal desc ) where rownum <= 2;
+
 begin
-	for i in c('&v_prj_id')	
-	loop
-		dbms_output.put_line(i.ename||' '||i.sal||' ' ||i.deptno);
-	end loop;
+  for i in c('&v_prj_id') loop
+    dbms_output.put_line(i.ename || ' ' || i.sal || ' ' || i.deptno);
+  end loop;
 end;
 /
 
