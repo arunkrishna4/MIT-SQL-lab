@@ -1,24 +1,24 @@
 9.1)
 declare
-  v_empno number:=&v_empno;
-  v_ename varchar(15);
-  v_deptno number:=&v_deptno;
+  v_empno emp1.empno%type:=&v_empno;
+  v_ename emp1.ename%type;
+  v_deptno emp1.deptno%type:='&v_deptno';
 begin
-  select ename into v_ename from emp where empno=v_empno;
+  select ename into v_ename from emp1 where empno=v_empno;
   dbms_output.put_line(v_ename);
   
-  select ename into v_ename from emp where rownum=1;
+  select to_number(v_ename)into v_ename from emp1 where rownum=1;
   dbms_output.put_line(v_ename);
-  
-  select ename into v_name from emp where deptno=v_deptno;
+
+  select ename into v_ename from emp1 where deptno=v_deptno;
   dbms_output.put_line(v_ename);
   
   exception
     when invalid_number then
-        to_number(ename);
+        dbms_output.put_line('char to num not possible');
     when too_many_rows then 
       dbms_output.put_line('there are multiple records to retrive');
-    when data_not_found then
+    when no_data_found then
       dbms_output.put_line('no data found');
 end;
 /
@@ -60,46 +60,24 @@ ________________________________________________________________________________
 9.3) 
 declare 
   sal_less exception;
-  v_empno number:=&v_empno;
-  v_name varchar(15);
-  v_sal number;
+  v_empno emp1.empno%type:=&v_empno;
+  v_name emp1.ename%type;
+  v_sal emp1.sal%type;
 begin
-  select empno, ename, sal into v_empno,v_name,v_sal from emp where empno=v_empno;
-  if sal>25000 then
+  select empno, ename, sal into v_empno,v_name,v_sal from emp1 where empno=v_empno;
+  if v_sal>25000 then
     raise sal_less;
     end if;
-  DBMS_output.put_line('name: '|| name ||' id: '||empno ||' salary: '||sal);
+  DBMS_output.put_line('name: '|| v_name ||' id: '|| v_empno ||' salary: '||v_sal);
   exception
     when no_data_found then
       dbms_output.put_line('user not found in the employee list');
     when sal_less then
-      update emp set sal=25000 where empno=v_empno;
+      update emp1 set sal=25000 where empno=v_empno;
   end;
   /
 
 _
 
 
-declare
-  v_empno emp1.empno%type:=&v_empno;
-  v_ename emp1.ename%type;
-  v_deptno emp1.deptno%type:='&v_deptno';
-begin
-  select ename into v_ename from emp1 where empno=v_empno;
-  dbms_output.put_line(v_ename);
-  
-  select to_number(v_ename)into v_ename from emp1 where rownum=1;
-  dbms_output.put_line(v_ename);
 
-  select ename into v_ename from emp1 where deptno=v_deptno;
-  dbms_output.put_line(v_ename);
-  
-  exception
-    when invalid_number then
-        dbms_output.put_line(to_number(v_ename));
-    when too_many_rows then 
-      dbms_output.put_line('there are multiple records to retrive');
-    when no_data_found then
-      dbms_output.put_line('no data found');
-end;
-/
