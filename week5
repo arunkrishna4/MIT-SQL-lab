@@ -8,7 +8,7 @@
 5.8)select * from emp1 where date_birth between '01-dec-2000' and '31-dec-2000';
 5.9)select count(ename),dname from dept1 d,emp1 e where d.dno=e.deptno group by dname having count(ename)>3;
 5.10) select * from emp1 e,proj1 p where e.prj_id=p.prj_no and prj_name='Drug Repositioning';
-5.11)
+5.11)select ceil(2.83) as ceil,floor(2.83) as floorval, trunc(2.83,1) as truncate, round(2.83) as roundval from dual;
 5.12)  select * from proj1 where end_date - strt_date >365;
-5.13)
+5.13)select ename,task_name from emp1 e,task t,proj p where e.deptno=p.dno and e.prj_no=p.prj_no and p.prj_no=t.prj_no and p.dno=t.dno;
 5.14)select * from dept1 where dno = (select dno from proj1 where prj_no is null);
