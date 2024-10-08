@@ -1,0 +1,14 @@
+4.1)select * from emp1 where sal>25000 or deptno="D1";
+4.2)select ename "Employee Name", sal "Salary" from emp1 where sal between 25200 and 35200;
+4.3)select ename from emp1 where deptno in (select dno from dept1 where location in('HYD',"BNG","MUB"));
+(or)
+select ename from emp1 where deptno in (select dno from dept1 where location="HYD" or location="BNG" or location="MUB");
+4.4)select * from emp1 order by deptno asc,sal desc;
+4.5)select * from task1 where prj_id="P3";
+4.6)select * from emp1 where comm is null or comm=0;
+4.7)create table manager as (select empno,ename,job,deptno,sal from emp1);
+4.8)select prj_no, prj_name from proj1 where dno="D2" and prj_credit>5;
+4.9)select * from emp where mgrid=111;
+4.10)select ename from emp1 where ename like '_ac%j' and length(ename)=6;
+4.11)select * from task1 where e_date-s_date<=7;
+4.12)select * from proj1 where prj_no in (select distinct prj_no from task1 where strt_date>'01-jan-2024');
