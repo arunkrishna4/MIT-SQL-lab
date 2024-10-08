@@ -78,3 +78,28 @@ begin
   /
 
 _
+
+
+declare
+  v_empno emp1.empno%type:=&v_empno;
+  v_ename emp1.ename%type;
+  v_deptno emp1.deptno%type:='&v_deptno';
+begin
+  select ename into v_ename from emp1 where empno=v_empno;
+  dbms_output.put_line(v_ename);
+  
+  select to_number(v_ename)into v_ename from emp1 where rownum=1;
+  dbms_output.put_line(v_ename);
+
+  select ename into v_ename from emp1 where deptno=v_deptno;
+  dbms_output.put_line(v_ename);
+  
+  exception
+    when invalid_number then
+        dbms_output.put_line(to_number(v_ename));
+    when too_many_rows then 
+      dbms_output.put_line('there are multiple records to retrive');
+    when no_data_found then
+      dbms_output.put_line('no data found');
+end;
+/
