@@ -1,0 +1,25 @@
+3.5) commit
+delete from emp where prj_id='p3';
+rollback;
+
+3.6)
+commit;
+delete from dept where dname="accoiunts";
+Rollback;
+
+3.7)
+commit;
+delete from emp where empno=125 and prj_id='p2';
+rollback;
+
+3.8)
+commit;
+delete from task where prj_id="p2";
+rollback;
+
+3.9)update proj1 set dno="d5" where rownum=1;
+
+3.10) update emp set job ="MGR",sal=35000,mgrid=111 where empno=123;
+
+3.11) update emp1 set comm=10000 where job="MGR";
+
