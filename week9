@@ -6,11 +6,11 @@ declare
 begin
   select ename into v_ename from emp1 where empno=v_empno;
   dbms_output.put_line(v_ename);
-  
-  select to_number(v_ename)into v_ename from emp1 where rownum=1;
-  dbms_output.put_line(v_ename);
 
   select ename into v_ename from emp1 where deptno=v_deptno;
+  dbms_output.put_line(v_ename);
+  
+  select to_number(v_ename)into v_ename from emp1 where rownum=1;
   dbms_output.put_line(v_ename);
   
   exception
@@ -32,7 +32,7 @@ DECLARE
   pri NUMBER := &pri;
   ir NUMBER := &ir;
   dur NUMBER := &dur;
-
+ 
 BEGIN
   IF pri <= 1000 THEN
     RAISE pri_less;
@@ -46,7 +46,7 @@ BEGIN
     RAISE dur_less;
   END IF;
   
-  DBMS_OUTPUT.PUT_LINE('interest to be paid is: '||pri*ir*dur);
+  DBMS_OUTPUT.PUT_LINE('interest to be paid is: '||(pri*ir*dur)/100);
 EXCEPTION
   WHEN pri_less THEN
     DBMS_OUTPUT.PUT_LINE('Principal amount is less');
@@ -74,6 +74,7 @@ begin
       dbms_output.put_line('user not found in the employee list');
     when sal_less then
       update emp1 set sal=25000 where empno=v_empno;
+      DBMS_output.put_line('Updated');
   end;
   /
 
