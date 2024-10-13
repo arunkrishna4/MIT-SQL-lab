@@ -1,0 +1,54 @@
+
+10.1)
+create table sal_mod(empno varchar2(20) primary key,
+    dname varchar2(20),
+    old_Sal number,
+    mod_date date,
+    modifier varchar2(20));
+
+create or replace trigger trig_up after update of sal on emp1 for each row;
+begin
+  if updating('sal') then
+    insert into sal_mod(:old.empno,:old.dname,:old.sal,sysdate,user);
+end;
+/
+________________________________________________________________________________________________________
+10.2)
+CREATE OR REPLACE TRIGGER PRJFUND_UP
+BEFORE UPDATE OF PRJ_FUND ON proj1
+FOR EACH ROW
+DECLARE
+  v_prjdur NUMBER;
+  v_addfund NUMBER;
+  v_amt NUMBER;
+BEGIN
+  IF :NEW.PRJ_FUND > :OLD.PRJ_FUND THEN 
+
+    v_prjdur := TO_NUMBER(TO_CHAR(SYSDATE, 'YYYYMMDD')) - TO_NUMBER(TO_CHAR(:OLD.STRT_DATE, 'YYYYMMDD'));
+
+    v_addfund := :NEW.PRJ_FUND - :OLD.PRJ_FUND;
+
+    IF v_prjdur < 0.5 * (:OLD.END_DATE - :OLD.START_DATE) THEN
+      v_amt := 0.7 * v_addfund;
+      DBMS_OUTPUT.PUT_LINE('You are eligible for Rs. ' || TO_CHAR(v_amt));
+    ELSE
+      v_amt := 0.4 * v_addfund;
+      DBMS_OUTPUT.PUT_LINE('You are eligible for Rs. ' || TO_CHAR(v_amt));
+    END IF;
+  END IF;
+END;
+/
+--------------------------------------------------------------------------------------------------------
+10.3)
+create or replace trigger sal_res before update of sal on emp1 for each row;
+
+begin
+  if updating('sal') then
+    if :new.sal < :old.sal then
+     raise_application_error('not possible');
+    else
+      DBMS_output.put_line('Updated succefully');
+    end if;
+  end if;
+end;
+/
