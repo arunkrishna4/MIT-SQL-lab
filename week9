@@ -26,6 +26,7 @@ end;
 9.1.2)
 declare
   v_deptno emp1.deptno%type:='&v_deptno';
+  v_ename emp1.ename%type;
 begin
   select ename into v_ename from emp1 where deptno=v_deptno;
   dbms_output.put_line(v_ename);
@@ -34,6 +35,12 @@ exception
       dbms_output.put_line('there are multiple records to retrive');
 end;
 /
+
+output;
+Enter value for v_deptno: D3
+old   2:   v_deptno emp1.deptno%type:='&v_deptno';
+new   2:   v_deptno emp1.deptno%type:='D3';
+there are multiple records to retrive.
 
 9.1.3)
 declare
@@ -45,6 +52,12 @@ exception
         dbms_output.put_line('char to num not possible');
 end;
 /
+
+output:
+Enter value for v_ename: arun
+old   2:     v_ename emp1.ename%type:='&v_ename';
+new   2:     v_ename emp1.ename%type:='arun';
+char to num not possible
 -------------------------------------------------------------------------------------------------
 9.2) 
 DECLARE
@@ -79,6 +92,20 @@ EXCEPTION
     DBMS_OUTPUT.PUT_LINE('Duration is less');
 END;
 /
+
+output:
+Enter value for pri: 20000
+old   6:   pri NUMBER := &pri;
+new   6:   pri NUMBER := 20000;
+Enter value for ir: 23
+old   7:   ir NUMBER := &ir;
+new   7:   ir NUMBER := 23;
+Enter value for dur: 3
+old   8:   dur NUMBER := &dur;
+new   8:   dur NUMBER := 3;
+interest to be paid is: 13800
+
+PL/SQL procedure successfully completed.
 __________________________________________________________________________________________________________________
 9.3) 
 declare 
@@ -101,7 +128,13 @@ begin
   end;
   /
 
-_
+output:
+Enter value for v_empno: 123
+old   3:   v_empno emp1.empno%type:=&v_empno;
+new   3:   v_empno emp1.empno%type:=123;
+Updated
+
+PL/SQL procedure successfully completed.
 
 
 
