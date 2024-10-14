@@ -23,6 +23,25 @@ begin
 end;
 /
 
+9.1.1)
+declare
+  v_empno emp1.empno%type:=&v_empno;
+  v_ename emp1.ename%type;
+begin
+  select ename into v_ename from emp1 where empno=v_empno;
+  dbms_output.put_line(v_ename);
+exception
+   when no_data_found then
+      dbms_output.put_line('no data found');
+end;
+/
+
+output:
+Enter value for v_empno: 200
+old   2:   v_empno emp1.empno%type:=&v_empno;
+new   2:   v_empno emp1.empno%type:=200;
+no data found
+
 9.1.2)
 declare
   v_deptno emp1.deptno%type:='&v_deptno';
