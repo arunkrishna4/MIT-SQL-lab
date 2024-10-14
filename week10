@@ -6,12 +6,25 @@ create table sal_mod(empno varchar2(20) primary key,
     mod_date date,
     modifier varchar2(20));
 
-create or replace trigger trig_up after update of sal on emp1 for each row;
-begin
-  if updating('sal') then
-    insert into sal_mod(:old.empno,:old.dname,:old.sal,sysdate,user);
-end;
+CREATE OR REPLACE TRIGGER trig_up
+AFTER UPDATE OF sal ON emp1
+FOR EACH ROW
+BEGIN
+  INSERT INTO sal_mod(empno, dname, old_sal, mod_date, modifier)
+  VALUES (:old.empno, :old.deptno, :old.sal, SYSDATE, USER);
+END;
 /
+
+output:
+ update emp1 set sal=99999 where empno=123;
+
+ select * from sal_mod;
+
+EMPNO                DNAME                   OLD_SAL MOD_DATE  MODIFIER
+-------------------- -------------------- ---------- --------- ---------
+
+123                  D3                        25000 14-OCT-24  MCA020
+
 ________________________________________________________________________________________________________
 10.2)
 CREATE OR REPLACE TRIGGER PRJFUND_UP
@@ -28,7 +41,7 @@ BEGIN
 
     v_addfund := :NEW.PRJ_FUND - :OLD.PRJ_FUND;
 
-    IF v_prjdur < 0.5 * (:OLD.END_DATE - :OLD.START_DATE) THEN
+    IF v_prjdur < 0.5 * (:OLD.END_DATE - :OLD.STRT_DATE) THEN
       v_amt := 0.7 * v_addfund;
       DBMS_OUTPUT.PUT_LINE('You are eligible for Rs. ' || TO_CHAR(v_amt));
     ELSE
@@ -38,17 +51,35 @@ BEGIN
   END IF;
 END;
 /
+
+output:
+
+update proj1 set prj_fund = 90000 where prj_credit=10;
+You are eligible for Rs. 16000
+
 --------------------------------------------------------------------------------------------------------
 10.3)
-create or replace trigger sal_res before update of sal on emp1 for each row;
+create or replace trigger sal_res before update of sal on emp1 for each row
 
 begin
-  if updating('sal') then
     if :new.sal < :old.sal then
-     raise_application_error('not possible');
+     raise_application_error(-20001,'not possible');
     else
-      DBMS_output.put_line('Updated succefully');
+     DBMS_output.put_line('Updated succesfully');
     end if;
-  end if;
 end;
 /
+
+output:
+update emp1 set sal=200 where empno=123
+       *
+ERROR at line 1:
+ORA-20001: not possible
+ORA-06512: at "MCA020.SAL_RES", line 3
+ORA-04088: error during execution of trigger 'MCA020.SAL_RES'
+
+output 2:
+ update emp1 set sal=39000 where empno=101;
+Updated succesfully
+
+
