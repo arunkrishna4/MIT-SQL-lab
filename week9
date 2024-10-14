@@ -14,12 +14,35 @@ begin
   dbms_output.put_line(v_ename);
   
   exception
-    when invalid_number then
+    when value_error then
         dbms_output.put_line('char to num not possible');
     when too_many_rows then 
       dbms_output.put_line('there are multiple records to retrive');
     when no_data_found then
       dbms_output.put_line('no data found');
+end;
+/
+
+9.1.2)
+declare
+  v_deptno emp1.deptno%type:='&v_deptno';
+begin
+  select ename into v_ename from emp1 where deptno=v_deptno;
+  dbms_output.put_line(v_ename);
+exception
+  when too_many_rows then 
+      dbms_output.put_line('there are multiple records to retrive');
+end;
+/
+
+9.1.3)
+declare
+    v_ename emp1.ename%type:='&v_ename';
+begin
+  dbms_output.put_line(to_number(v_ename));
+exception
+   when value_error then
+        dbms_output.put_line('char to num not possible');
 end;
 /
 -------------------------------------------------------------------------------------------------
