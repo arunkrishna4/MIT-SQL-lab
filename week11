@@ -1,0 +1,79 @@
+11.1) 
+create or replace procedure cal_ag(dob in date, join_date in date, age out number, exp out number) is 
+
+begin
+age:=sysdate-dob;
+exp:=sysdate-join_date;
+end;
+/
+_________________________________________________________________________________________________________
+11.2)
+create or replace procedure proj(dept in varchar2) is 
+
+projname proj.prjname%type; 
+cursor emp_rec is select ename from emp1 where deptno=dept;
+
+begin
+select prjname into projname from proj where deptid = dept;
+Dbms_output.put_line('project name: '|| prjname);
+Dbms_output.put_line('The employees working in that project are: ')
+for i in emp_rec
+loop
+  dbms_output.put_line(i.ename);
+  end loop;
+end;
+___________________________________________________________________________________________________
+11.3)
+_________________________________________________________________________________________________
+11.4)
+CREATE OR REPLACE FUNCTION tot_prjfund(
+    p_dept_no IN VARCHAR2
+) RETURN NUMBER IS
+    v_tot_fund NUMBER;
+    v_dep_name VARCHAR2(40);
+    CURSOR c IS
+        SELECT SUM(prj_fund)
+        FROM proj1
+        WHERE dno = p_dept_no;
+BEGIN
+    OPEN c;
+    FETCH c INTO v_tot_fund;
+    CLOSE c;
+
+    SELECT dname INTO v_dep_name
+    FROM dept
+    WHERE dno = p_dept_no;
+
+    IF v_dep_name IS NOT NULL THEN
+        DBMS_OUTPUT.PUT_LINE(v_dep_name || ' department has received Rs.' || v_tot_fund);
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Department ' || p_dept_no || ' not found.');
+    END IF;
+
+    RETURN v_tot_fund;
+END;
+/
+_________________________________________________________________________________________________________________________________
+11.5)
+create or replace package cal is
+procedure sum_sal(dep_name in varchar);
+function num_emp (proj_n in varchar2)return number;
+end cal;
+/
+
+create or replace package body cal is
+
+procedure sum_sal(dep_name in varchar,salsum out number) is
+  tot_sal number;
+begin
+  select sum(sal) into salsum from emp where dno =(select dno from dept1 where dept_name = dep_name);
+end sum_sal;
+
+function num_emp(proj_n in varchar2) return number is
+  tot_cou number;
+begin
+  select count(*) into tot_cou from emp1 where deptno = (select dno from proj1 where prj_name=proj_n);
+  return tot_cou;
+end num_emp;
+end cal;
+/
