@@ -4,7 +4,7 @@ create or replace procedure cal_ag(dob in date, join_date in date, age out numbe
 begin
 age:=sysdate-dob;
 exp:=sysdate-join_date;
-end;
+end cal_ag;
 /
 _________________________________________________________________________________________________________
 11.2)
