@@ -10,7 +10,6 @@ PL/SQL block for calling the procedure:
 
 DECLARE
     cursor emp_rec is select ename,date_birth, date_join from emp1;
-    v_ename emp1.ename%type;
     v_age NUMBER;
     v_exp NUMBER;
 BEGIN
