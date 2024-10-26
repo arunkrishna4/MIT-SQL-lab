@@ -1,58 +1,147 @@
 11.1) 
 create or replace procedure cal_ag(dob in date, join_date in date, age out number, exp out number) is 
-
 begin
 age:=sysdate-dob;
 exp:=sysdate-join_date;
 end cal_ag;
 /
-_________________________________________________________________________________________________________
-11.2)
-create or replace procedure proj(dept in varchar2) is 
 
-projname proj.prjname%type; 
-cursor emp_rec is select ename from emp1 where deptno=dept;
+PL/SQL block for calling the procedure:
 
-begin
-select prjname into projname from proj where deptid = dept;
-Dbms_output.put_line('project name: '|| prjname);
-Dbms_output.put_line('The employees working in that project are: ')
-for i in emp_rec
-loop
-  dbms_output.put_line(i.ename);
-  end loop;
-end;
-___________________________________________________________________________________________________
-11.3)
-_________________________________________________________________________________________________
-11.4)
-CREATE OR REPLACE FUNCTION tot_prjfund(
-    p_dept_no IN VARCHAR2
-) RETURN NUMBER IS
-    v_tot_fund NUMBER;
-    v_dep_name VARCHAR2(40);
-    CURSOR c IS
-        SELECT SUM(prj_fund)
-        FROM proj1
-        WHERE dno = p_dept_no;
+DECLARE
+    cursor emp_rec is select ename,date_birth, date_join from emp1;
+    v_ename emp1.ename%type;
+    v_age NUMBER;
+    v_exp NUMBER;
 BEGIN
-    OPEN c;
-    FETCH c INTO v_tot_fund;
-    CLOSE c;
-
-    SELECT dname INTO v_dep_name
-    FROM dept
-    WHERE dno = p_dept_no;
-
-    IF v_dep_name IS NOT NULL THEN
-        DBMS_OUTPUT.PUT_LINE(v_dep_name || ' department has received Rs.' || v_tot_fund);
-    ELSE
-        DBMS_OUTPUT.PUT_LINE('Department ' || p_dept_no || ' not found.');
-    END IF;
-
-    RETURN v_tot_fund;
+    for i in emp_rec
+    loop
+    cal_ag(i.date_birth, i.date_join, v_age, v_exp);
+    DBMS_OUTPUT.PUT_LINE('Name: ' || i.ename);
+    DBMS_OUTPUT.PUT_LINE('Age: ' || v_age || ' years');
+    DBMS_OUTPUT.PUT_LINE('Experience: ' || v_exp || ' years');
+    end loop;
 END;
 /
+OUTPUT:
+Name: Ravi
+Age: 39 years
+Experience: 23 years
+Name: Raviraj
+Age: 43 years
+Experience: 23 years
+Name: Raghu
+Age: 49 years
+Experience: 38 years
+_________________________________________________________________________________________________________
+11.2)
+CREATE OR REPLACE PROCEDURE proj(dept IN VARCHAR2) IS
+  projname proj1.prj_name%TYPE;
+  CURSOR emp_rec IS SELECT ename FROM emp1 WHERE deptno = dept;
+
+BEGIN
+  SELECT prj_name INTO projname FROM proj1 WHERE dno = dept;
+  DBMS_OUTPUT.PUT_LINE('Project name: ' || projname);  -- Changed prj_name to projname
+  DBMS_OUTPUT.PUT_LINE('The employees working on that project are: ');
+
+  FOR i IN emp_rec LOOP
+    DBMS_OUTPUT.PUT_LINE(i.ename);
+  END LOOP;
+
+EXCEPTION
+  WHEN NO_DATA_FOUND THEN
+    DBMS_OUTPUT.PUT_LINE('No project found for the given department.');
+  WHEN OTHERS THEN
+    DBMS_OUTPUT.PUT_LINE('Error: ' || SQLERRM);
+END proj;
+/
+
+Program for procedure:
+
+DECLARE
+  deptnum VARCHAR2(10) := '&deptnum'; 
+BEGIN
+  proj(deptnum);
+END;
+/
+
+OUTPUT:
+Enter value for deptnum: D3
+Project name: webpage
+The employees working on that project are:
+Mahesh
+Hulk
+___________________________________________________________________________________________________
+11.3)
+ CREATE OR REPLACE FUNCTION Get_Project_Status (
+        p_project_id IN VARCHAR2
+    ) RETURN VARCHAR2
+    IS
+        v_total_tasks NUMBER;
+       v_completed_tasks NUMBER;
+        v_in_progress_tasks NUMBER;
+    BEGIN
+        SELECT COUNT(*)INTO v_total_tasks FROM task1 WHERE prj_id = p_project_id;
+       SELECT COUNT(*) INTO v_completed_tasks FROM task1 WHERE prj_id = p_project_id AND status = 'Completed';
+       SELECT COUNT(*) INTO v_in_progress_tasks FROM task1 WHERE prj_id = p_project_id AND status = 'In Progress';
+       IF v_total_tasks = v_completed_tasks THEN
+           RETURN 'Completed';
+       ELSIF v_in_progress_tasks > 0 THEN
+           RETURN 'In Progress';
+       ELSE
+           RETURN 'Pending';
+       END IF;
+   END Get_Project_Status;
+   /
+
+ DECLARE
+        v_project_status VARCHAR2(20);
+        v_prjid varchar(20) :='&v_prjid';
+    BEGIN
+        v_project_status := Get_Project_Status(v_prjid);
+        DBMS_OUTPUT.PUT_LINE('Project Status: ' || v_project_status);
+    END;
+    /
+
+output:
+Enter value for v_prjid: P1
+Project Status: Pending
+_________________________________________________________________________________________________
+11.4)
+CREATE OR REPLACE FUNCTION calculate_total_project_fund(dept_number in varchar2) RETURN NUMBER IS
+   total_fund NUMBER := 0;
+    BEGIN
+    SELECT SUM(prj_fund)
+    INTO total_fund
+    FROM proj1
+    WHERE dno = dept_number;
+    RETURN total_fund;
+    END calculate_total_project_fund;
+   /
+
+program:
+ DECLARE
+    v_deptno proj1.dno%TYPE;
+    v_total_fund NUMBER;
+    CURSOR dept_cursor IS
+    SELECT DISTINCT dno FROM proj1;
+    BEGIN
+    OPEN dept_cursor;
+    LOOP
+    FETCH dept_cursor INTO v_deptno;
+   EXIT WHEN dept_cursor%NOTFOUND;
+   v_total_fund := calculate_total_project_fund(v_deptno);
+   DBMS_OUTPUT.PUT_LINE('Department ' || v_deptno || ' has received Rs. ' || v_total_fund || '/-');
+   END LOOP;
+   CLOSE dept_cursor;
+   END;
+   /
+output:
+Department D1 has received Rs. 990000/-
+Department D2 has received Rs. 200000/-
+Department D3 has received Rs. 300000/-
+Department D4 has received Rs. 700000/-
+  
 _________________________________________________________________________________________________________________________________
 11.5)
 create or replace package cal is
@@ -66,7 +155,7 @@ create or replace package body cal is
 procedure sum_sal(dep_name in varchar,salsum out number) is
   tot_sal number;
 begin
-  select sum(sal) into salsum from emp where dno =(select dno from dept1 where dept_name = dep_name);
+  select sum(sal) into salsum from emp1 where deptno =(select dno from dept1 where dept_name = dep_name);
 end sum_sal;
 
 function num_emp(proj_n in varchar2) return number is
